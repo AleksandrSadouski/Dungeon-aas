@@ -5,6 +5,7 @@ use App\Models\Player;
 use App\Models\GameSession;
 use App\Constants\GameConst;
 use App\Constants\ChanceConst;
+use App\Services\RoomFactory;
 
 class GameService
 {
@@ -55,7 +56,7 @@ class GameService
         return $room;
     }
 
-    public function generateArrayRooms(): array
+    public function generateArrayRooms(GameSession $session): GameSession
     {
         $roomX = $this->generateRoom();
         $roomY = $this->generateRoom(); 
@@ -64,21 +65,41 @@ class GameService
                 $roomY = $this->generateRoom();
             }
         $rooms = [$roomX, $roomY];
-        return $rooms;
-    }
-
-    public function WhoisWho(GameSession $session, array $rooms): array
-    {
         shuffle($rooms);
         $session->left = $rooms[0];
         $session->right = $rooms[1];
         $session->save();
-        return $rooms;
+        return $session;
+    }
+
+    public function preGenerate(GameSession $session): GameSession
+    {
+        if (empty($session->left) || empty($session->right))
+            {
+                $session = $this->generateArrayRooms($session);
+            }
+        return $session;
+    }
+
+    public function leftOrRight(GameSession $session, string $choice): GameSession
+    {
+        $roomFactory = new RoomFactory();
+        if ($choice == 'left')
+            {
+                $roomService = $roomFactory->make($session->left[0]);
+                $session = $roomService->process($session, $session->left[1]);
+            }
+        elseif ($choice == 'right')
+            {   
+                $roomService = $roomFactory->make($session->right[0]);
+                $session = $roomService->process($session, $session->right[1]);
+            }
+        return $session;    
     }
     
     public function isDead(GameSession $session): bool
     {
-        if ($session->health <= 0)
+        if ($session->health <= GameConst::MIN_HEALTH)
             {
                 $session->is_active = 0;
                 $player = $session->player;
@@ -89,7 +110,7 @@ class GameService
                 if ($session->kol_rooms > $player->max_rooms)
                     {$player->max_rooms = $session->kol_rooms;}
                 $player->save();
-                $session->delete();
+                $session->save();
                 return true;
             }
             else return false;

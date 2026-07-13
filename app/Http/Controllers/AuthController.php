@@ -5,28 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Player;
 use App\Models\GameSession;
+use App\Http\Resources\PlayerResource;
+use App\Http\Requests\AuthRequest;
 
 class AuthController extends Controller
 {
-    public function identify(Request $request)
+    public function identify(AuthRequest $request)
     {
-        try {
-            $name = $request->input('name');
-            $player = Player::where('name', $name)->first();
-            if($player == null)
-                {
-                    $player = Player::create(['name' => $name]);
-                    $session = null;
-                    return response()->json(['player' => $player, 'session' => $session]);                
-                }
-                else {
-                    $session = $player->gameSession;
-                    return response()->json(['player' => $player, 'session' => $session]);
-                    }
-       } 
-       
-       catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 400);
-}
+        $name = $request->input('name');
+        $player = Player::with('gameSession')->where('name', $name)->first();
+        if($player == null)
+            {
+                $player = Player::create(['name' => $name]);
+                return new PlayerResource($player);                
+            }
+            else 
+            {
+                $session = $player->gameSession;
+                return new PlayerResource($player); 
+            }
     }
 }

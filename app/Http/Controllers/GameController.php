@@ -6,40 +6,26 @@ use Illuminate\Http\Request;
 use App\Models\Player;
 use App\Models\GameSession;
 use App\Services\GameService;
-use App\Services\RoomFactory;
+use App\Http\Resources\SessionResource;
+use App\Http\Requests\GameRequest;
 
 class GameController extends Controller
 {
-    public function openRoom(Request $request, GameSession $session)
+    public function openRoom(GameRequest $request, GameSession $session)
     {
         $choice = $request->input('choice');
         $gameService = new GameService();
-        $roomFactory = new RoomFactory();
-        if (empty($session->left) || empty($session->right))
-            {
-                $rooms = $gameService->generateArrayRooms();
-                $rooms = $gameService->WhoIsWho($session, $rooms);
-            }
-        if ($choice == 'left')
-            {
-                $roomService = $roomFactory->make($session->left[0]);
-                $session = $roomService->process($session, $session->left[1]);
-            }
-        elseif ($choice == 'right')
-            {   
-                $roomService = $roomFactory->make($session->right[0]);
-                $session = $roomService->process($session, $session->right[1]);
-            }
-        else return response()->json(['error' => 'Invalid variants'], 400);
+
+        $session = $gameService->preGenerate($session);
+
+        $session = $gameService->leftOrRight($session, $choice);
             
         if($gameService->isDead($session))
             {
-                return response()->json(['message' => 'dead']);
+                return new SessionResource($session);
             }
 
-        $rooms = $gameService->generateArrayRooms();
-        $rooms = $gameService->WhoIsWho($session, $rooms);
-
-        return response()->json(['session' => $session]);
+        $session = $gameService->generateArrayRooms($session);
+        return new SessionResource($session);
     }
 }

@@ -5,22 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Player;
 use App\Models\GameSession;
+use App\Http\Resources\SessionResource;
 
 class MenuController extends Controller
 {
     public function continueGame(Player $player)
     {
-        try {
         $session = $player->gameSession;
-        return response()->json(['session' => $session]);}
-        
-        catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 400);}
+        if ($session == null || $session->is_active == 0)
+            {
+              return response()->json(['error' => 'No active session'], 400);
+            }
+        return new SessionResource($session);
     }
 
     public function createGame(Player $player)
     {
-        try {
+        $player->kol_game++;
+        $player->save();
         $session = $player->gameSession;
         if ($session != null)
             {
@@ -29,9 +31,6 @@ class MenuController extends Controller
         $session = new GameSession();
         $session->player_id = $player->id;
         $session->save();
-        return response()->json(['session' => $session]);}
-        
-        catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 400);}
+        return new SessionResource($session);
     }
 }
