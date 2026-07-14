@@ -94,6 +94,9 @@ class GameService
                 $roomService = $roomFactory->make($session->right[0]);
                 $session = $roomService->process($session, $session->right[1]);
             }
+        $session->left = [];
+        $session->right = [];
+        $session->save();
         return $session;    
     }
     
@@ -102,6 +105,7 @@ class GameService
         if ($session->health <= GameConst::MIN_HEALTH)
             {
                 $session->is_active = 0;
+                $session->health = GameConst::MIN_HEALTH;
                 $player = $session->player;
                 $player->kol_gold += $session->kol_gold;
                 $player->kol_game++;

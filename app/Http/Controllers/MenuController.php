@@ -30,6 +30,8 @@ class MenuController extends Controller
             }
         $session = new GameSession();
         $session->player_id = $player->id;
+        $session->left = [];
+        $session->right = [];
         $session->save();
         return new SessionResource($session);
     }

@@ -6,7 +6,7 @@ use App\Models\GameSession;
 
 class HealerService implements RoomInterfaceService
 {
-        public function process(GameSession $session, string $subtype)
+        public function process(GameSession $session, string $subtype): GameSession
     {
         $session->kol_rooms++;
 
