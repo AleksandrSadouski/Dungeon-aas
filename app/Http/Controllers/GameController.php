@@ -6,26 +6,37 @@ use Illuminate\Http\Request;
 use App\Models\Player;
 use App\Models\GameSession;
 use App\Services\GameService;
+use App\Services\GenerateService;
 use App\Http\Resources\SessionResource;
 use App\Http\Requests\GameRequest;
 
 class GameController extends Controller
 {
+    private GameService $gameService;
+    private GenerateService $generateService;
+
+    public function __construct(GameService $gameService, GenerateService $generateService){
+        $this->gameService = $gameService;
+        $this->generateService = $generateService;
+    }
+
     public function openRoom(GameRequest $request, GameSession $session)
     {
         $choice = $request->input('choice');
-        $gameService = new GameService();
 
-        $session = $gameService->preGenerate($session);
+        if($this->gameService->stopNotActiveSession($session))
+            {return response()->json(['error' => 'Session is not active'], 409);}
+        
+        $session = $this->generateService->preGenerate($session);
 
-        $session = $gameService->leftOrRight($session, $choice);
+        $session = $this->gameService->stepProcess($session, $choice);
             
-        if($gameService->isDead($session))
+        if($this->gameService->isDead($session))
             {
                 return new SessionResource($session);
             }
 
-        $session = $gameService->generateArrayRooms($session);
+        $session = $this->generateService->generateArrayRooms($session);
         return new SessionResource($session);
     }
 }

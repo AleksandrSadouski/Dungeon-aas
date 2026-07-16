@@ -21,8 +21,6 @@ class MenuController extends Controller
 
     public function createGame(Player $player)
     {
-        $player->kol_game++;
-        $player->save();
         $session = $player->gameSession;
         if ($session != null)
             {
