@@ -22,6 +22,11 @@ class GameController extends Controller
 
     public function openRoom(GameRequest $request, GameSession $session)
     {
+        if($request->user()->id != $session->player_id)
+            {
+                return response()->json(['error' => 'Is not your profile'], 403);
+            }
+        
         $choice = $request->input('choice');
 
         if($this->gameService->stopNotActiveSession($session))

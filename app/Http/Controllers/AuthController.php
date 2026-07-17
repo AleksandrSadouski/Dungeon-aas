@@ -17,12 +17,13 @@ class AuthController extends Controller
         if($player == null)
             {
                 $player = Player::create(['name' => $name]);
-                return new PlayerResource($player);                
+                $token = $player->createToken('auth-token')->plainTextToken;
+                return response()->json(['player' => new PlayerResource($player), 'token' => $token]);               
             }
             else 
             {
                 $session = $player->gameSession;
-                return new PlayerResource($player); 
+                return response()->json(['player' => new PlayerResource($player)]); 
             }
     }
 }

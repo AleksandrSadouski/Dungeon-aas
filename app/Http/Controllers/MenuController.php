@@ -9,8 +9,9 @@ use App\Http\Resources\SessionResource;
 
 class MenuController extends Controller
 {
-    public function continueGame(Player $player)
+    public function continueGame(Request $request)
     {
+        $player = $request->user();
         $session = $player->gameSession;
         if ($session == null || $session->is_active == 0)
             {
@@ -19,13 +20,16 @@ class MenuController extends Controller
         return new SessionResource($session);
     }
 
-    public function createGame(Player $player)
+    public function createGame(Request $request)
     {
+        $player = $request->user();
         $session = $player->gameSession;
+
         if ($session != null)
             {
                 $session->delete();
             }
+        
         $session = new GameSession();
         $session->player_id = $player->id;
         $session->left = [];
