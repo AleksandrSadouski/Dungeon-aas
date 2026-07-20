@@ -12,4 +12,6 @@ Route::post('/menu/game', [MenuController::class, 'createGame'])->middleware('th
 Route::get('/menu/game', [MenuController::class, 'continueGame'])->middleware('throttle:60,1');
 Route::post('/game/{session}/step', [GameController::class, 'openRoom'])->middleware('throttle:80,1');
 Route::post('/menu/logout', [MenuController::class, 'exitMenu'])->middleware('throttle:60,1');
+Route::get('/menu/leaderboard/kolgold', [MenuController::class, 'showLeaderboardKolgold'])->middleware('throttle:60,1');
+Route::get('/menu/leaderboard/maxrooms', [MenuController::class, 'showLeaderboardMaxrooms'])->middleware('throttle:60,1');
 });

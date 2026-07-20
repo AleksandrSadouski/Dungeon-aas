@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Player;
 use App\Models\GameSession;
 use App\Http\Resources\SessionResource;
+use App\Http\Resources\LeaderboardResource;
 
 class MenuController extends Controller
 {
@@ -42,5 +43,17 @@ class MenuController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
         return response()->json(null, 204);
+    }
+
+    public function showLeaderboardKolgold(Request $request)
+    {
+        $players = Player::orderBy('kol_gold', 'desc')->select('name', 'kol_gold')->limit(5)->get();
+        return new LeaderboardResource::collection($players);
+    }
+
+        public function showLeaderboardMaxrooms(Request $request)
+    {
+        $players = Player::orderBy('max_rooms', 'desc')->select('name', 'max_rooms')->limit(5)->get();
+        return new LeaderboardResource::collection($players);
     }
 }
