@@ -7,6 +7,7 @@ use App\Models\Player;
 use App\Models\GameSession;
 use App\Http\Resources\SessionResource;
 use App\Http\Resources\LeaderboardResource;
+use Illuminate\Support\Facades\Cache;
 
 class MenuController extends Controller
 {
@@ -47,13 +48,17 @@ class MenuController extends Controller
 
     public function showLeaderboardKolgold(Request $request)
     {
-        $players = Player::orderBy('kol_gold', 'desc')->select('name', 'kol_gold')->limit(5)->get();
+        $players = Cache::remember('top_kol_gold', 240, function () {
+            return Player::orderBy('kol_gold', 'desc')->select('name', 'kol_gold')->limit(5)->get();
+            });
         return new LeaderboardResource::collection($players);
     }
 
         public function showLeaderboardMaxrooms(Request $request)
     {
-        $players = Player::orderBy('max_rooms', 'desc')->select('name', 'max_rooms')->limit(5)->get();
+        $players = Cache::remember('top_max_rooms', 240, function () {
+            return Player::orderBy('max_rooms', 'desc')->select('name', 'max_rooms')->limit(5)->get();
+            });
         return new LeaderboardResource::collection($players);
     }
 }
