@@ -37,4 +37,10 @@ class MenuController extends Controller
         $session->save();
         return new SessionResource($session);
     }
+
+    public function exitMenu(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(null, 204);
+    }
 }

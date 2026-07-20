@@ -22,8 +22,13 @@ class AuthController extends Controller
             }
             else 
             {
+                if ($player->tokens()->get()->count() > 0)
+                    {
+                        $player->tokens()->delete();
+                    }
+                $token = $player->createToken('auth-token')->plainTextToken;
                 $session = $player->gameSession;
-                return response()->json(['player' => new PlayerResource($player)]); 
+                return response()->json(['player' => new PlayerResource($player), 'token' => $token]); 
             }
     }
 }
