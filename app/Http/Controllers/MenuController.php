@@ -51,7 +51,7 @@ class MenuController extends Controller
         $players = Cache::remember('top_kol_gold', 240, function () {
             return Player::orderBy('kol_gold', 'desc')->select('name', 'kol_gold')->limit(5)->get();
             });
-        return new LeaderboardResource::collection($players);
+        return LeaderboardResource::collection($players);
     }
 
         public function showLeaderboardMaxrooms(Request $request)
@@ -59,6 +59,6 @@ class MenuController extends Controller
         $players = Cache::remember('top_max_rooms', 240, function () {
             return Player::orderBy('max_rooms', 'desc')->select('name', 'max_rooms')->limit(5)->get();
             });
-        return new LeaderboardResource::collection($players);
+        return LeaderboardResource::collection($players);
     }
 }
