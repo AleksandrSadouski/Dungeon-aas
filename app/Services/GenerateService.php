@@ -30,7 +30,7 @@ class GenerateService
         return $elTS;
     }
 
-    private function vyborSubtype($type): array
+    private function selectSubtype($type): array
     {
         switch ($type){
         case 'monster': $subtypes = ChanceConst::CHANCE_SUBTYPES_MONSTER;
@@ -50,7 +50,7 @@ class GenerateService
     {
         $room = [];
         $type = $this->generateCumSum(ChanceConst::CHANCE_TYPES);
-        $subtypes = $this->vyborSubtype($type);
+        $subtypes = $this->selectSubtype($type);
         $subtype = $this->generateCumSum($subtypes);
         $room = [$type, $subtype];
         return $room;
