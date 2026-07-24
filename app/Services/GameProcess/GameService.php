@@ -1,5 +1,5 @@
 <?php
-namespace App\Services;
+namespace App\Services\GameProcess;
 
 use App\Models\Player;
 use App\Models\GameSession;

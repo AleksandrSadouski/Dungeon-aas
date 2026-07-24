@@ -16,19 +16,16 @@ class AuthController extends Controller
         $player = Player::with('gameSession')->where('name', $name)->first();
         if($player == null)
             {
-                $player = Player::create(['name' => $name]);
-                $token = $player->createToken('auth-token')->plainTextToken;
-                return response()->json(['player' => new PlayerResource($player), 'token' => $token]);               
+                $player = Player::create(['name' => $name]);              
             }
             else 
             {
-                if ($player->tokens()->get()->count() > 0)
-                    {
-                        $player->tokens()->delete();
-                    }
-                $token = $player->createToken('auth-token')->plainTextToken;
-                $session = $player->gameSession;
-                return response()->json(['player' => new PlayerResource($player), 'token' => $token]); 
+                $player->tokens()->delete();
             }
+        $token = $player->createToken('auth-token')->plainTextToken;
+        return response()->json(['status' => 'success', 
+        'message' => 'Player completed identification', 
+        'data' => new PlayerResource($player), 
+        'token' => $token], 200);
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace App\Services;
+namespace App\Services\RoomType;
 
 use App\Constants\GameConst;
 use App\Models\GameSession;

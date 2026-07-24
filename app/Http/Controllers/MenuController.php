@@ -17,9 +17,12 @@ class MenuController extends Controller
         $session = $player->gameSession;
         if ($session == null || $session->is_active == 0)
             {
-              return response()->json(['error' => 'No active session'], 400);
+              return response()->json(['status' => 'error', 
+              'message' => 'No active session'], 400);
             }
-        return new SessionResource($session);
+        return response()->json(['status' => 'success',
+        'message' => 'Player continue session',
+        'data' => new SessionResource($session)], 200);
     }
 
     public function createGame(Request $request)
@@ -37,13 +40,16 @@ class MenuController extends Controller
         $session->left = [];
         $session->right = [];
         $session->save();
-        return new SessionResource($session);
+        return response()->json(['status' => 'success',
+        'message' => 'Player create session',
+        'data' => new SessionResource($session)], 200);
     }
 
     public function exitMenu(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-        return response()->json(null, 204);
+        return response()->json(['status' => 'success',
+        'message' => 'Player log out'], 200);
     }
 
     public function showLeaderboardKolgold(Request $request)
@@ -51,7 +57,9 @@ class MenuController extends Controller
         $players = Cache::remember('top_kol_gold', 240, function () {
             return Player::orderBy('kol_gold', 'desc')->select('name', 'kol_gold')->limit(5)->get();
             });
-        return LeaderboardResource::collection($players);
+        return response()->json(['status' => 'success',
+        'message' => 'Show Leaderboard',
+        'data' => LeaderboardResource::collection($players)], 200);
     }
 
         public function showLeaderboardMaxrooms(Request $request)
@@ -59,6 +67,8 @@ class MenuController extends Controller
         $players = Cache::remember('top_max_rooms', 240, function () {
             return Player::orderBy('max_rooms', 'desc')->select('name', 'max_rooms')->limit(5)->get();
             });
-        return LeaderboardResource::collection($players);
+        return response()->json(['status' => 'success',
+        'message' => 'Show Leaderboard',
+        'data' => LeaderboardResource::collection($players)], 200);
     }
 }

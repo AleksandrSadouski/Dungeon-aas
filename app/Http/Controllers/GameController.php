@@ -24,13 +24,17 @@ class GameController extends Controller
     {
         if($request->user()->id != $session->player_id)
             {
-                return response()->json(['error' => 'Is not your profile'], 403);
+                return response()->json(['status' => 'error',
+                'message' => 'Is not your profile'], 403);
             }
         
         $choice = $request->input('choice');
 
         if($this->gameService->stopNotActiveSession($session))
-            {return response()->json(['error' => 'Session is not active'], 409);}
+            {
+                return response()->json(['status' => 'error', 
+                'message' => 'Session is not active'], 409);
+            }
         
         $session = $this->generateService->preGenerate($session);
 
@@ -38,10 +42,14 @@ class GameController extends Controller
             
         if($this->gameService->isDead($session))
             {
-                return new SessionResource($session);
+                return response()->json(['status' => 'success', 
+                'message' => 'Player is dead',
+                'data' => new SessionResource($session)], 200);
             }
 
         $session = $this->generateService->generateArrayRooms($session);
-        return new SessionResource($session);
+        return response()->json(['status' => 'success', 
+        'message' => 'Player continues step',
+        'data' => new SessionResource($session)], 200);
     }
 }
