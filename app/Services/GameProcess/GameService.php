@@ -47,9 +47,12 @@ class GameService
     {
         if ($session->health <= GameConst::MIN_HEALTH)
             {
+                try {
                 DB::transaction(function() use ($session) 
                 {$this->saveStat($session);});
-                return true;
+                return true;}
+                catch (\Throwable $e)
+                {throw new \RuntimeException('Result game dont save: ' . $e->getMessage(), 500);}
             }
             else return false;
     }
