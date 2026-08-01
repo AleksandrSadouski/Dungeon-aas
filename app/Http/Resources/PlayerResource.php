@@ -16,6 +16,7 @@ class PlayerResource extends JsonResource
         'max_rooms' => $this->max_rooms,
         'max_gold' => $this->max_gold,
         'kol_gold_player' => $this->kol_gold,
+        'kol_rooms_player' => $this->kol_rooms,
         'session' => new SessionResource ($this->whenLoaded('gameSession'))];
     }
 }

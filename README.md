@@ -6,31 +6,34 @@ Dungeon-aas — это проект из серии работ '-aas'. Явля�
 
 ## Технологии
 
-- PHP 8.3
-- Laravel 13
-- MySQL
-- Sanctum (API-аутентификация)
-- Eloquent ORM
-- API Resources
-- FormRequest (валидация)
-- Middleware (throttle)
-- Cache (лидерборды)
-- REST API
+- **Backend:**
+    - PHP 8.3
+    - Laravel 13
+    - MySQL
+- **Архитектура Laravel:**
+    - Eloquent ORM
+    - API Resources
+    - FormRequest (валидация)
+    - Middleware (throttle)
+- **Дополнительно:**
+    - Sanctum (API-аутентификация)
+    - Cache (лидерборды)
+    - REST API
 
 ---
 
 ## Структура проекта:
 
-app/
-├── Constants/ # константы игры (вероятности и лимиты)
-├── Http/
-│ ├── Controllers/ # AuthController, GameController, MenuController
-│ ├── Requests/ # AuthRequest, GameRequest
-│ └── Resources/ # PlayerResource, SessionResource, LeaderboardResource
-├── Models/ # Player, GameSession
-└── Services/
-├── GameProcess/ # GameService, GenerateService, RoomFactory
-└── RoomType/ # MonsterService, ChestService, HealerService, ArmorService, EmptyService
+- **app/** — основная директория
+    - **Constants/** — константы игры (вероятности и лимиты)
+    - **Http/**
+        - **Controllers/** — контроллеры авторизации, меню и игры
+        - **Requests/** — реквесты для валидации
+        - **Resources/** — API ресурсы для фронтенда
+    - **Models/** — модели игрока и сессии
+    - **Services/**
+        - **GameProcess/** — сервисы управления игрой и генерации комнат (фабрика + интерфейс)
+        - **RoomType/** — сервисы комнат (монстр, лекарь, броня, сундук, пустая)
 
 ---
 
@@ -134,4 +137,6 @@ php artisan serve
 
 ---
 
-Автор: Aleksandr Sadouski
+## Автор: 
+
+Aleksandr Sadouski
