@@ -45,6 +45,14 @@ class MenuController extends Controller
         'data' => new SessionResource($session)], 200);
     }
 
+    public function showStats(Request $request)
+    {
+        $player = $request->user();
+        return response()->json(['status' => 'success',
+        'message' => 'Show stats',
+        'data' => new PlayerResource($player)], 200);
+    }
+
     public function exitMenu(Request $request)
     {
         $request->user()->currentAccessToken()->delete();

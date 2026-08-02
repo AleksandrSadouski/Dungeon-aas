@@ -1,5 +1,8 @@
 # Dungeon-aas
 
+![PHP Version](https://img.shields.io/badge/PHP-8.3-blue)
+![Laravel Version](https://img.shields.io/badge/Laravel-13-red)
+
 Dungeon-aas — это проект из серии работ '-aas'. Является простым рогаликом на Laravel. На данный момент реализована backend-часть. Игрок путешествует по бесконечному подземелью, каждый раз выбирая одну из двух дверей. За дверью может оказаться монстр, сундук с золотом, лекарь, броня или пустая комната. Игра продолжается до гибели персонажа. Вся статистика сохраняется в профиль игрока.
 
 ---
@@ -41,10 +44,12 @@ Dungeon-aas — это проект из серии работ '-aas'. Явля�
 
 | Метод | Эндпоинт | Описание |
 |---|---|---|
-| POST | `/auth` | Войти / регистрация профиля |
+| POST | `/auth/login` | Войти в профиль |
+| POST | `/auth/register` | Регистрация профиля |
 | POST | `/menu/game` | Начать новую игру |
 | GET | `/menu/game` | Продолжить текущую игру |
 | POST | `/menu/logout` | Выйти из профиля |
+| GET | `/menu/stats` | Показать статистику игрока |
 | GET | `/menu/leaderboard/kolgold` | Показать таблицу лидеров по золоту |
 | GET | `/menu/leaderboard/maxrooms` | Показать таблицу лидеров по комнатам |
 | POST | `/game/{session}/step` | Выбор комнаты |
@@ -102,9 +107,21 @@ php artisan serve
 
 ## Тестирование через Postman
 
-1. Авторизация:
-   POST /api/auth
-   Body: { "name": "Vasya" }
+1. Регистрация:
+   POST /api/auth/register
+   Body: { 
+    "name": "Sashok", 
+    "password": "XXXXXXXX",
+    "password_confirmation": "XXXXXXXX"}
+   → сохранить token из ответа
+
+   или
+
+   Вход:
+   POST /api/auth/login
+   Body (JSON): {
+    "name": "Sashok",
+    "password": "XXXXXXXX"}
    → сохранить token из ответа
 
 2. Создать игру:
@@ -115,21 +132,25 @@ php artisan serve
 3. Открыть комнату:
    POST /api/game/{session_id}/step
    Header: Authorization: Bearer {token}
-   Body: { "choice": "left" }
+   Body: { "choice": "left" } или Body: { "choice": "right" }
 
-4. Продолжить игру:
+4. Продолжить игру (если уже есть сессия, иначе вернёт ошибку 400):
    GET /api/menu/game
    Header: Authorization: Bearer {token}
 
-5. Лидерборд по золоту:
+5. Показать статистику игрока:
+   GET /api/menu/stats
+   Header: Authorization: Bearer {token}
+
+6. Лидерборд по золоту:
    GET /api/menu/leaderboard/kolgold
    Header: Authorization: Bearer {token}
 
-6. Лидерборд по комнатам:
+7. Лидерборд по комнатам:
    GET /api/menu/leaderboard/maxrooms
    Header: Authorization: Bearer {token}
 
-7. Выйти:
+8. Выйти:
    POST /api/menu/logout
    Header: Authorization: Bearer {token}
 
