@@ -12,7 +12,7 @@ Route::post('/auth/register', [AuthController::class, 'register'])->middleware('
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/menu/game', [MenuController::class, 'createGame'])->middleware('throttle:60,1');
     Route::get('/menu/game', [MenuController::class, 'continueGame'])->middleware('throttle:60,1');
-    Route::post('/menu/logout', [MenuController::class, 'exitMenu'])->middleware('throttle:60,1');
+    Route::delete('/menu/logout', [MenuController::class, 'exitMenu'])->middleware('throttle:60,1');
     Route::get('/menu/stats', [MenuController::class, 'showStats'])->middleware('throttle:60,1');
     Route::get('/menu/leaderboard/kolgold', [MenuController::class, 'showLeaderboardKolgold'])->middleware('throttle:60,1');
     Route::get('/menu/leaderboard/maxrooms', [MenuController::class, 'showLeaderboardMaxrooms'])->middleware('throttle:60,1');

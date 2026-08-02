@@ -1,8 +1,5 @@
 # Dungeon-aas
 
-![PHP Version](https://img.shields.io/badge/PHP-8.3-blue)
-![Laravel Version](https://img.shields.io/badge/Laravel-13-red)
-
 Dungeon-aas — это проект из серии работ '-aas'. Является простым рогаликом на Laravel. На данный момент реализована backend-часть. Игрок путешествует по бесконечному подземелью, каждый раз выбирая одну из двух дверей. За дверью может оказаться монстр, сундук с золотом, лекарь, броня или пустая комната. Игра продолжается до гибели персонажа. Вся статистика сохраняется в профиль игрока.
 
 ---
@@ -48,7 +45,7 @@ Dungeon-aas — это проект из серии работ '-aas'. Явля�
 | POST | `/auth/register` | Регистрация профиля |
 | POST | `/menu/game` | Начать новую игру |
 | GET | `/menu/game` | Продолжить текущую игру |
-| POST | `/menu/logout` | Выйти из профиля |
+| DELETE | `/menu/logout` | Выйти из профиля |
 | GET | `/menu/stats` | Показать статистику игрока |
 | GET | `/menu/leaderboard/kolgold` | Показать таблицу лидеров по золоту |
 | GET | `/menu/leaderboard/maxrooms` | Показать таблицу лидеров по комнатам |
@@ -151,12 +148,37 @@ php artisan serve
    Header: Authorization: Bearer {token}
 
 8. Выйти:
-   POST /api/menu/logout
+   DELETE /api/menu/logout
    Header: Authorization: Bearer {token}
 
 При смерти игрока is_active становится 0, статистика обновляется.
 
 ---
+
+## Примеры ответов API
+
+Успешный ответ:
+
+```bash
+{
+    "status": "success",
+    "message": "Player continues step",
+    "data": {
+        "session_id": 1,
+        "health": 100,
+        "armor": 25
+    }
+}
+```
+
+Ошибка:
+
+```bash
+{
+    "status": "error",
+    "message": "Session is not active"
+}
+```
 
 ## Автор: 
 
