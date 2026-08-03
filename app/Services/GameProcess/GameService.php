@@ -20,7 +20,7 @@ class GameService
 
     public function stopNotActiveSession(GameSession $session): bool
     {
-        if ($session->is_active == 0)
+        if ($session == null || $session->is_active == 0)
             {return true;}
         return false;
     }
@@ -64,7 +64,7 @@ class GameService
         $player = $session->player;
         $player->kol_gold += $session->kol_gold;
         $player->kol_game++;
-        $player->kol_rooms += $session->kol_rooms
+        $player->kol_rooms += $session->kol_rooms;
         if ($session->kol_gold > $player->max_gold)
             {$player->max_gold = $session->kol_gold;}
         if ($session->kol_rooms > $player->max_rooms)

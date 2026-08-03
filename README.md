@@ -49,7 +49,7 @@ Dungeon-aas — это проект из серии работ '-aas'. Явля�
 | GET | `/menu/stats` | Показать статистику игрока |
 | GET | `/menu/leaderboard/kolgold` | Показать таблицу лидеров по золоту |
 | GET | `/menu/leaderboard/maxrooms` | Показать таблицу лидеров по комнатам |
-| POST | `/game/{session}/step` | Выбор комнаты |
+| POST | `/game/step` | Выбор комнаты |
 
 ---
 
@@ -127,7 +127,7 @@ php artisan serve
    → сохранить session_id из ответа
 
 3. Открыть комнату:
-   POST /api/game/{session_id}/step
+   POST /api/game/step
    Header: Authorization: Bearer {token}
    Body: { "choice": "left" } или Body: { "choice": "right" }
 

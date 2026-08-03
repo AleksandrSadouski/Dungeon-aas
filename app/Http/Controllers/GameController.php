@@ -19,20 +19,16 @@ class GameController extends Controller
         $this->generateService = $generateService;
     }
 
-    public function openRoom(GameRequest $request, GameSession $session)
+    public function openRoom(GameRequest $request)
     {
-        if($request->user()->id != $session->player_id)
-            {
-                return response()->json(['status' => 'error',
-                'message' => 'Is not your profile'], 403);
-            }
-        
+        $player = $request->user();
+        $session = $player->gameSession;
         $choice = $request->input('choice');
 
         if($this->gameService->stopNotActiveSession($session))
             {
                 return response()->json(['status' => 'error', 
-                'message' => 'Session is not active'], 409);
+                'message' => 'Not active session'], 409);
             }
         
         $session = $this->generateService->preGenerate($session);
