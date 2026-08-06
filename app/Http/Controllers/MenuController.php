@@ -6,11 +6,16 @@ use Illuminate\Http\Request;
 use App\Models\Player;
 use App\Models\GameSession;
 use App\Http\Resources\SessionResource;
-use App\Http\Resources\LeaderboardResource;
-use Illuminate\Support\Facades\Cache;
+use App\Services\Menu\LeaderboardService;
 
 class MenuController extends Controller
 {
+    private LeaderboardService $leaderboardService;
+
+    public function __construct(LeaderboardService $leaderboardService){
+        $this->leaderboardService = $leaderboardService;
+    }
+
     public function continueGame(Request $request)
     {
         $player = $request->user();
@@ -62,21 +67,15 @@ class MenuController extends Controller
 
     public function showLeaderboardKolgold(Request $request)
     {
-        $players = Cache::remember('top_kol_gold', 240, function () {
-            return Player::orderBy('kol_gold', 'desc')->select('name', 'kol_gold')->limit(5)->get();
-            });
         return response()->json(['status' => 'success',
         'message' => 'Show Leaderboard',
-        'data' => LeaderboardResource::collection($players)], 200);
+        'data' => $this->leaderboardService->showLeaderboard('top_kol_gold', 'kol_gold', 5)], 200);
     }
 
-        public function showLeaderboardMaxrooms(Request $request)
+    public function showLeaderboardMaxrooms(Request $request)
     {
-        $players = Cache::remember('top_max_rooms', 240, function () {
-            return Player::orderBy('max_rooms', 'desc')->select('name', 'max_rooms')->limit(5)->get();
-            });
         return response()->json(['status' => 'success',
         'message' => 'Show Leaderboard',
-        'data' => LeaderboardResource::collection($players)], 200);
+        'data' => $this->leaderboardService->showLeaderboard('top_max_rooms', 'max_rooms', 5)], 200);
     }
 }
