@@ -9,6 +9,8 @@ use App\Http\Resources\SessionResource;
 use App\Http\Resources\PlayerResource;
 use App\Services\Menu\LeaderboardService;
 use App\Http\Requests\RenameRequest;
+use App\Http\Requests\DeleteRequest;
+use Illuminate\Support\Facades\Hash;
 
 class MenuController extends Controller
 {
@@ -60,6 +62,21 @@ class MenuController extends Controller
         return response()->json(['status' => 'success',
         'message' => 'Player renamed',
         'data' => new PlayerResource($player)], 200);
+    }
+
+    public function deletePlayer(DeleteRequest $request)
+    {
+        $player = $request->user();
+        $password = $request->input('password');
+        if (!Hash::check($password, $player->password))
+            {
+                return response()->json(['status' => 'error', 
+                'message' => 'Incorrect password'], 401);
+            }
+        $player->tokens()->delete();
+        $player->delete();
+        return response()->json(['status' => 'success',
+        'message' => 'Profile successfully deleted'], 200);  
     }
 
     public function showStats(Request $request)
