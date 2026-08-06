@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Player;
 use App\Models\GameSession;
 use App\Http\Resources\SessionResource;
+use App\Http\Resources\PlayerResource;
 use App\Services\Menu\LeaderboardService;
 
 class MenuController extends Controller
@@ -77,5 +78,12 @@ class MenuController extends Controller
         return response()->json(['status' => 'success',
         'message' => 'Show Leaderboard',
         'data' => $this->leaderboardService->showLeaderboard('top_max_rooms', 'max_rooms', 5)], 200);
+    }
+
+    public function showLeaderboardKolRooms(Request $request)
+    {
+        return response()->json(['status' => 'success',
+        'message' => 'Show Leaderboard',
+        'data' => $this->leaderboardService->showLeaderboard('top_kol_rooms', 'kol_rooms', 5)], 200);
     }
 }

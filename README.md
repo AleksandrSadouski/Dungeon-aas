@@ -48,7 +48,8 @@ Dungeon-aas — это проект из серии работ '-aas'. Явля�
 | DELETE | `/menu/logout` | Выйти из профиля |
 | GET | `/menu/stats` | Показать статистику игрока |
 | GET | `/menu/leaderboard/kolgold` | Показать таблицу лидеров по золоту |
-| GET | `/menu/leaderboard/maxrooms` | Показать таблицу лидеров по комнатам |
+| GET | `/menu/leaderboard/maxrooms` | Показать таблицу лидеров по максимальному количеству комнат за одну игру |
+| GET | `/menu/leaderboard/kolrooms` | Показать таблицу лидеров по количеству комнат за всё время |
 | POST | `/game/step` | Выбор комнаты |
 
 ---
