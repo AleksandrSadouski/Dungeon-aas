@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends FormRequest
+class RenameRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,7 +14,6 @@ class RegisterRequest extends FormRequest
 
     public function rules(): array
     {
-        return ['new_name' => 'required|string|unique:players,name|min:2|max:16',
-        'password' => 'required|string|min:8|max:32|confirmed'];
+        return ['new_name' => 'required|string|unique:players,name|min:2|max:16'];
     }
 }

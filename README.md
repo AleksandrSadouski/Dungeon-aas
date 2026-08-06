@@ -45,6 +45,7 @@ Dungeon-aas — это проект из серии работ '-aas'. Явля�
 | POST | `/auth/register` | Регистрация профиля |
 | POST | `/menu/game` | Начать новую игру |
 | GET | `/menu/game` | Продолжить текущую игру |
+| PATCH | `/menu/name` | Переименовать игрока |
 | DELETE | `/menu/logout` | Выйти из профиля |
 | GET | `/menu/stats` | Показать статистику игрока |
 | GET | `/menu/leaderboard/kolgold` | Показать таблицу лидеров по золоту |
@@ -144,11 +145,20 @@ php artisan serve
    GET /api/menu/leaderboard/kolgold
    Header: Authorization: Bearer {token}
 
-7. Лидерборд по комнатам:
+7. Лидерборд по макс. комнатам:
    GET /api/menu/leaderboard/maxrooms
    Header: Authorization: Bearer {token}
 
-8. Выйти:
+8. Лидерборд по количеству комнат:
+   GET /api/menu/leaderboard/kolrooms
+   Header: Authorization: Bearer {token}
+
+9. Переименовать игрока:
+   PATCH /api/menu/name
+   Header: Authorization: Bearer {token}
+   Body: { "new_name": "Andala" }
+
+10. Выйти:
    DELETE /api/menu/logout
    Header: Authorization: Bearer {token}
 

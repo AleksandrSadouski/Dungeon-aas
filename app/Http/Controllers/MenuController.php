@@ -8,6 +8,7 @@ use App\Models\GameSession;
 use App\Http\Resources\SessionResource;
 use App\Http\Resources\PlayerResource;
 use App\Services\Menu\LeaderboardService;
+use App\Http\Requests\RenameRequest;
 
 class MenuController extends Controller
 {
@@ -49,6 +50,16 @@ class MenuController extends Controller
         return response()->json(['status' => 'success',
         'message' => 'Player create session',
         'data' => new SessionResource($session)], 200);
+    }
+
+    public function renamePlayer(RenameRequest $request)
+    {
+        $player = $request->user();
+        $player->name = $request->input('new_name');
+        $player->save();
+        return response()->json(['status' => 'success',
+        'message' => 'Player renamed',
+        'data' => new PlayerResource($player)], 200);
     }
 
     public function showStats(Request $request)
