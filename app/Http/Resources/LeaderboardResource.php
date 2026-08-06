@@ -12,6 +12,7 @@ class LeaderboardResource extends JsonResource
         return [
         'name' => $this->name,
         'max_rooms' => $this->when(!empty($this->max_rooms), $this->max_rooms),
-        'kol_gold_player' => $this->when(!empty($this->kol_gold), $this->kol_gold)];
+        'kol_gold_player' => $this->when(!empty($this->kol_gold), $this->kol_gold),
+        'kol_rooms_player' => $this->when(!empty($this->kol_rooms), $this->kol_rooms)];
     }
 }
