@@ -94,24 +94,10 @@ class MenuController extends Controller
         'message' => 'Player log out'], 200);
     }
 
-    public function showLeaderboardKolgold(Request $request)
+    public function showLeaderboard(Request $request)
     {
         return response()->json(['status' => 'success',
         'message' => 'Show Leaderboard',
-        'data' => $this->leaderboardService->showLeaderboard('top_kol_gold', 'kol_gold', 5)], 200);
-    }
-
-    public function showLeaderboardMaxrooms(Request $request)
-    {
-        return response()->json(['status' => 'success',
-        'message' => 'Show Leaderboard',
-        'data' => $this->leaderboardService->showLeaderboard('top_max_rooms', 'max_rooms', 5)], 200);
-    }
-
-    public function showLeaderboardKolRooms(Request $request)
-    {
-        return response()->json(['status' => 'success',
-        'message' => 'Show Leaderboard',
-        'data' => $this->leaderboardService->showLeaderboard('top_kol_rooms', 'kol_rooms', 5)], 200);
+        'data' => $this->leaderboardService->getLeaderboard($request->query('type_top'))], 200);
     }
 }

@@ -17,9 +17,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/menu/logout', [MenuController::class, 'exitMenu'])->middleware('throttle:60,1');
     Route::delete('/menu/delete', [MenuController::class, 'deletePlayer'])->middleware('throttle:1,1');
     Route::get('/menu/stats', [MenuController::class, 'showStats'])->middleware('throttle:60,1');
-    Route::get('/menu/leaderboard/kolgold', [MenuController::class, 'showLeaderboardKolgold'])->middleware('throttle:60,1');
-    Route::get('/menu/leaderboard/maxrooms', [MenuController::class, 'showLeaderboardMaxrooms'])->middleware('throttle:60,1');
-    Route::get('/menu/leaderboard/kolrooms', [MenuController::class, 'showLeaderboardKolrooms'])->middleware('throttle:60,1');
+    Route::get('/menu/leaderboard', [MenuController::class, 'showLeaderboard'])->middleware('throttle:60,1');
 
     Route::post('/game/step', [GameController::class, 'openRoom'])->middleware('throttle:80,1');
 });
