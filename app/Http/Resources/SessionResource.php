@@ -15,6 +15,8 @@ class SessionResource extends JsonResource
         'armor' => $this->armor,
         'kol_rooms' => $this->kol_rooms,
         'kol_gold_session' => $this->kol_gold,
-        'is_active' => $this->is_active];
+        'is_active' => $this->is_active,
+        'left_room' => $this->left,
+        'right_room' => $this->right];
     }
 }
