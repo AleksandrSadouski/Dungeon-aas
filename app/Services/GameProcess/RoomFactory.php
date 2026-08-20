@@ -9,22 +9,38 @@ use App\Services\EmptyService;
 
 class RoomFactory
 {
+    private MonsterService $monsterService;
+    private HealerService $healerService;
+    private ArmorService $armorService;
+    private ChestService $chestService;
+    private EmptyService $emptyService;
+
+    public function __construct(MonsterService $monsterService, HealerService $healerService,
+    ArmorService $armorService, ChestService $chestService, EmptyService $emptyService)
+    {
+        $this->monsterService = $monsterService;
+        $this->healerService = $healerService;
+        $this->armorService = $armorService;
+        $this->chestService = $chestService;
+        $this->emptyService = $emptyService;
+    }
+
     public function make(string $type): RoomInterfaceService
     {
         switch($type)
         {
             case 'monster':
-                return app(MonsterService::class);
+                return $this->monsterService;
             case 'healer':
-                return app(HealerService::class);
+                return $this->healerService;
             case 'armor':
-                return app(ArmorService::class);
+                return $this->armorService;
             case 'chest':
-                return app(ChestService::class);
+                return $this->chestService;
             case 'empty':
-                return app(EmptyService::class);
+                return $this->emptyService;
             default:
-                return app(EmptyService::class);
+                return $this->emptyService;
         }
     }
 }
